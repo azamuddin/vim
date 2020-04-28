@@ -1,5 +1,3 @@
-" vim-bootstrap 
-
 " Note: Skip initialization for vim-tiny or vim-small.
 if 0 | endif
 
@@ -102,12 +100,17 @@ Plug 'christoomey/vim-conflicted'
 Plug 'davidoc/taskpaper.vim'
 Plug 'vifm/vifm.vim'
 
-if isdirectory('/usr/local/opt/fzf') 
-  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' 
-else 
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do':'./install --bin' } 
-  Plug 'junegunn/fzf.vim' 
-endif 
+"if isdirectory('/usr/local/opt/fzf') 
+  "Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' 
+"else 
+  "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do':'./install --bin' } 
+  "Plug 'junegunn/fzf.vim' 
+"endif 
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do':'./install --bin' } 
+Plug 'junegunn/fzf.vim' 
+
+
 
 let g:make = 'gmake' 
 
@@ -147,11 +150,23 @@ Plug 'arnaud-lb/vim-php-namespace'
 "Plug 'peitalin/vim-jsx-typescript'
 
 
+" Emmet 
+Plug 'mattn/emmet-vim'
+let g:user_emmet_settings = {
+      \'javascript': {
+      \     'extends': 'jsx',
+      \}
+\}
+
+"let g:user_emmet_expandabbr_key='<Tab>'
+imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
 " markdown preview
 Plug 'jamshedvesuna/vim-markdown-preview'
 let vim_markdown_preview_github=1
 let vim_markdown_preview_browser='Google Chrome'
 let vim_markdown_preview_toggle=1
+let vim_markdown_preview_temp_file=1
 
 " dart & flutter 
 let g:hot_reload_on_save=1 
@@ -474,15 +489,20 @@ endif
 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>e :FZF -m<CR>
+
+function! CustomFZF()
+   exe "lcd " . getcwd(-1) . " | FZF"
+endfunction 
+
+nnoremap <leader>e :call CustomFZF()<CR>
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
 
 " snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsEditSplit="vertical"
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<tab>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+"let g:UltiSnipsEditSplit="vertical"
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -629,11 +649,11 @@ set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"inoremap <silent><expr> <TAB>
+      "\ pumvisible() ? "\<C-n>" :
+      "\ <SID>check_back_space() ? "\<TAB>" :
+      "\ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -749,3 +769,4 @@ autocmd BufWinEnter *.* silent loadview
 " nnoremap <silent> <C-j> :call comfortable_motion#flick(100)<CR>
 " nnoremap <silent> <C-k> :call comfortable_motion#flick(-100)<CR>
 :set fillchars+=vert:\ 
+
