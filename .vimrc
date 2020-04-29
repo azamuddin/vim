@@ -78,7 +78,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree' 
 Plug 'jistr/vim-nerdtree-tabs' 
 Plug 'tpope/vim-commentary' 
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive' 
+Plug 'sirver/ultisnips'
 Plug 'vim-airline/vim-airline' 
 Plug 'vim-airline/vim-airline-themes' 
 Plug 'airblade/vim-gitgutter' 
@@ -335,13 +337,6 @@ if exists("*fugitive#statusline")
   set statusline+=%{fugitive#statusline()}
 endif
 
-" vim-airline
-let g:airline_theme = 'powerlineish'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#ale#enabled = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline_skip_empty_sections = 1
 
 
 "*****************************************************************************
@@ -384,7 +379,6 @@ let Grep_Skip_Dirs = '.git node_modules'
 
 " terminal emulation
 nnoremap <silent> <leader>sh :terminal<CR>
-
 
 "*****************************************************************************
 "" Commands
@@ -593,12 +587,23 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 
+" vim-airline
+let g:airline_theme = 'deus'
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#ale#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'jsformatter'
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline_skip_empty_sections = 1
+let g:airline_section_y = ' '
+let g:airline_section_warning = ''
+
 if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = ' '
+  let g:airline_left_sep          = ''"▶
   let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
+  let g:airline_right_sep         = ' · ' "◀
   let g:airline_right_alt_sep     = '«'
   let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
   let g:airline#extensions#readonly#symbol   = '⊘'
@@ -769,4 +774,5 @@ autocmd BufWinEnter *.* silent loadview
 " nnoremap <silent> <C-j> :call comfortable_motion#flick(100)<CR>
 " nnoremap <silent> <C-k> :call comfortable_motion#flick(-100)<CR>
 :set fillchars+=vert:\ 
+
 
